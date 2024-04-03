@@ -1,5 +1,3 @@
-variable "alb" {}
-
 variable "environment" {
   type = string
 }
@@ -15,7 +13,3 @@ variable "port" {
 }
 
 variable "sg" {}
-
-variable "vpc" {}
-
-variable "zone" {}
