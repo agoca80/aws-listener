@@ -2,7 +2,7 @@ variable "environment" {
   type = string
 }
 
-variable "listener" {}
+variable "ingress" {}
 
 variable "name" {
   type = string
@@ -12,4 +12,6 @@ variable "port" {
   type = number
 }
 
-variable "sg" {}
+variable "tags" {
+  type = map(string)
+}

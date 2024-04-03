@@ -4,11 +4,11 @@ resource "aws_security_group_rule" "this" {
   to_port                  = var.port
   type                     = "ingress"
   security_group_id        = data.aws_security_group.this.id
-  source_security_group_id = var.sg.id
+  source_security_group_id = local.sg_id
 }
 
 resource "aws_alb_listener_rule" "this" {
-  listener_arn = var.listener.arn
+  listener_arn = local.listener_arn
   priority     = 1
 
   action {
@@ -18,7 +18,7 @@ resource "aws_alb_listener_rule" "this" {
 
   condition {
     host_header {
-      values = [format("%s.%s", var.name, var.zone.name)]
+      values = [local.fqdn]
     }
   }
 
@@ -26,13 +26,13 @@ resource "aws_alb_listener_rule" "this" {
 }
 
 resource "aws_route53_record" "this" {
-  zone_id = var.zone.id
+  zone_id = data.aws_ssm_parameter.zone_id.value
   name    = var.name
   type    = "A"
 
   alias {
-    name                   = var.alb.dns_name
-    zone_id                = var.alb.zone_id
+    name                   = local.alb_name
+    zone_id                = local.alb_zone_id
     evaluate_target_health = true
   }
 }
